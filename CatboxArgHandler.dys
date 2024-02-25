@@ -126,7 +126,7 @@ class ArgHandler()
 
     function printTable(tbl)
         for _,v in pairs(tbl) do
-            io.write("\t",v.flag,"\t",v.desc,"\n")
+            io.write("\t",v.flag,"\t",v.descr,"\n")
         end
     end
 
