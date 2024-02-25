@@ -2,7 +2,7 @@ Jellybean a cli tool for the [catbox api](https://catbox.moe/)
 
 written in [dysnomia](https://github.com/return5/Project-Dysnomia)  
 
-named for my cat [(Jellybean)](#Jellybean)
+named for my cat [Jellybean](#Jellybean)
 
 ## use
 ``jellybean [request] [flag(s)]``  
