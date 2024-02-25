@@ -13,30 +13,30 @@ note: request must be first argument.
 ## request
 - df	
   - delete file(s) from catbox. 
-    - accepted flags: [-h userhash][-ih] -f file(s)
+    - accepted flags: [-h][-ih] -f
 - ra
 	- remove file(s) from an album on catbox.
-      - accepted flags: [-h userhash] -s short -f file(s)
+      - accepted flags: [-h] -s -f
 - ca
 	- create album on catbox.
-      - accepted flags: [-h userhash] -t title -d desc -f file(s)
+      - accepted flags: [-h] -t -d -f
 - da
 	- delete an album on catbox.
-      - accepted flags: [-h userhash] -s short  
+      - accepted flags: [-h] -s
 - ea
 	- edit album on catbox.
-      - accepted flags: [-h userhash] -s short -t title -d description -f file(s)
+      - accepted flags: [-h] -s -t -d -f
 - uu
 	- upload a file from url to catbox.
-      - accepted flags: [-h userhash][-ih] -f url(s)
+      - accepted flags: [-h][-ih] -f
 - fu
 	- upload a file to catbox.
-      - accepted flags: [-h userhash][-ih] -f file(s)
+      - accepted flags: [-h][-ih] -f
 - h
 	- print help message
 - aa
 	- add file(s) to album on catbox.
-      - accepted flags: [-h userhash] -s short -f file(s)
+      - accepted flags: [-h] -s -f
 
 ## flags
 - s
