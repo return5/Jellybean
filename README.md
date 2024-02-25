@@ -59,6 +59,16 @@ note: request must be first argument.
 - ignoreHash  
   - set to true to ignore the -h option and also to ignore userhash in Config.dys  
 
+## examples
+  - upload a single file anonymously   
+  ```dysnomia jellybean -fu -ih -f myFile.jpg```  
+
+  - upload two files to an account using  userhash   
+   ```dysnomia jellybean.dys -fu -h myHash -f myFile1.jpg myFile2.jpg```  
+
+  - create an album(assuming userhash in config)   
+    ```dysnomia jellybean.dys -ca -t myAlbum -d a_photo_album -f 123.jpg 456.jpg 790.jpg```  
+
 
 ## Jellybean  
 this is my cat Jellybean  
