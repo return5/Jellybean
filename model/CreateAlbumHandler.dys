@@ -1,0 +1,11 @@
+var MultiFileHandler = require("model.MultiFileHandler")
+
+class CreateAlbum(files,hash,title,desc) :> MultiFileHandler
+
+    constructor(files,hash,title,desc)
+        super(files,hash,'-F reqtype="createalbum" ')
+        self.title = 'tile ="' .. title .. '" '
+        self.desc = 'desc="' .. desc .. '" '
+    end
+
+endClass

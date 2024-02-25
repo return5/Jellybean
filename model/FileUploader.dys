@@ -1,0 +1,38 @@
+
+
+class FileUploader(files,hash,reqType)
+    var concat = table.concat
+    var popen = io.popen
+
+    method createCurlCommand(file)
+        return concat({"curl ",self.reqType,self.hash,file,"  https://catbox.moe/user/api.php"})
+    end
+
+    method createUploadTable()
+        var uploadTable = {}
+        for file in self.files:gmatch("(-F%s*%S+)")  do
+            uploadTable[#uploadTable + 1] = self:createCurlCommand(file)
+        end
+        return uploadTable
+    end
+
+    method uploadFiles()
+        var uploadTable = createUploadTable()
+        var resultsTable = {}
+        for i=1,#uploadTable,1 do
+            io.write("calling command: ",uploadTable[i],"\n")
+            var pipe = popen(uploadTable[i])
+            resultsTable[#resultsTable + 1] = pipe:read("*a")
+            pipe:close()
+        end
+        return resultsTable
+    end
+
+    constructor(files,hash,reqType)
+        self.files = files
+        self.reqType = reqType
+        self.hash = hash == "" and hash or '-F "userhash=' .. hash .. '" '
+    end
+
+endClass
+

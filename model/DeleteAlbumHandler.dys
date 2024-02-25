@@ -1,0 +1,19 @@
+
+var FileUploader = require('model.FileUploader')
+
+class DeleteAlbumHandler(hash,short) :> FileUploader
+
+    method createCurlCommand()
+        return table.concat({"curl ",self.reqType,self.hash,self.short,"https://catbox.moe/user/api.php"})
+    end
+
+    method createUploadTable()
+        return {self:createCurlCommand()}
+    end
+
+    constructor(hash,short)
+        super("",hash,'-F "reqtype=deletealbum" ')
+        self.short = '-F "short=' .. short .. '" '
+    end
+
+endClass

@@ -1,0 +1,10 @@
+
+var FileUploader = require('model.FileUploader')
+
+class UrlUploadHandler(files,hash) :> FileUploader
+
+    constructor(files,hash)
+        super(files:gsub("(.-);;;",'-F "url=%1" '),hash,'-F "reqtype=urlupload" ')
+    end
+
+endClass

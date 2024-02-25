@@ -1,0 +1,11 @@
+
+var MultiFileHandler = require('model.MultiFileHandler')
+
+class AddToAlbumHandler(files,hash,short) :> MultiFileHandler
+
+    constructor(files,hash,short)
+        super(files,hash,'-F "reqtype=addtoalbum" ')
+        self.short = '-F short="' .. short .. '" '
+    end
+
+endClass

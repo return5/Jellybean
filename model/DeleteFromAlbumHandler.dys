@@ -1,0 +1,11 @@
+
+var MultiFileHandler = require('model.MultiFileHandler')
+
+class DeleteFromAlbumHandler(files,hash,short) :> MultiFileHandler
+
+    constructor(files,hash,short)
+        super(files,hash,'-F reqType="removefromalbum" ')
+        self.short = '-F short="' .. short .. '" '
+    end
+
+endClass

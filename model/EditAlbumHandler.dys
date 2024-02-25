@@ -1,0 +1,13 @@
+
+var MultiFileHandler = require('model.MultiFileHandler')
+
+class EditAlbumHandler(files,hash,short,title,desc) :> MultiFileHandler
+
+    constructor(files,hash,short,title,desc)
+        super(files,hash,'-F "reqtype=editalbum" ')
+        self.short = '-F "short=' .. short .. '" '
+        self.title = '-F "title=' .. title .. '" '
+        self.desc = '-F "desc=' .. desc ..'" '
+    end
+
+endClass

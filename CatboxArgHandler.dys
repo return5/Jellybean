@@ -1,0 +1,130 @@
+var FileUploadHandler = require('model.FileUploadHandler')
+var UrlUploadHandler = require('model.UrlUploadHandler')
+var DeleteFileHandler = require('model.DeleteFileHandler')
+var AddToAlbumHandler = require('model.AddToAlbumHandler')
+var CreateAlbumHandler = require('model.CreateAlbumHandler')
+var DeleteAlbumHandler = require('model.DeleteAlbumHandler')
+var RemoveFromAlbumHandier = require('model.RemoveFromAlbumHandler')
+var EditAlbumHandler = require("model.EditAlbumHandler")
+var Config = require('Config')
+
+
+class ArgHandler()
+
+    record ArgOptions(flag,descr,func) endRec
+
+    function getUserHash()
+        if Config.ignoreHash then return "" end
+        return Config.userHash or ""
+    end
+
+    function searchForArg(regex,args)
+        var ending = args:match(regex .. "$")
+        var middle = args:match(regex .. ";;;")
+        return middle or ending or ""
+    end
+
+    function findArg(regex,regex2,args)
+        var match1 = searchForArg(regex,args)
+        if match1 ~= "" then return match1 end
+        return searchForArg(regex2,args)
+    end
+
+    var findFiles = (args) -> findArg(";;;%-f;;;(.-)",";;;%-f(.-)",args) .. ";;;"
+
+    function findHash(args)
+        if findArg(";;;%-ih",";;;-ih;;;",args) ~= "" then return "" end
+        var hash = findArg(";;;%-h;;;(.-)",";;;-h(.-)",args)
+        if hash == "" then return getUserHash() end
+        return hash
+    end
+
+    var findShort = (args) -> findArg(";;;%-s;;;(.-)",";;;-s(.-)",args)
+
+    function handleRequest(args,klass)
+        var hash = findHash(args)
+        var files = findFiles(args)
+        return klass:new(files,hash)
+    end
+
+    var fileUploadHandler = (args) -> handleRequest(args,FileUploadHandler)
+
+    var urlUploadHandler = (args) -> handleRequest(args,UrlUploadHandler)
+
+    var deleteFiles = (args) -> handleRequest(args,DeleteFileHandler)
+
+    function findHashFiles(args)
+        var hash = findHash(args)
+        var files = findFiles(args)
+        return hash,files
+    end
+
+    function findHashFilesShort(args)
+        var hash,files = findHashFiles(args)
+        var short = findShort(args)
+        return hash,files,short
+    end
+
+    function addToAlbum(args)
+        var hash,files,short = findHashFilesShort(args)
+        return AddToAlbumHandler:new(files,hash,short)
+    end
+
+    function deleteAlbum(args)
+        var hash = findHash(args)
+        var short = findShort(args)
+        return DeleteAlbumHandler:new(hash,short)
+    end
+
+    var findTitle = (args) -> findArg(";;;%-t;;;(.-)",";;;%-t(.-)",args)
+
+    var findDesc = (args) -> findArg(";;;%-d;;;(.-)",";;;%-d(.-)",args)
+
+    function createAlbum(args)
+        var hash,files = findHashFiles(args)
+        var title = findTitle(args)
+        var desc = findDesc(args)
+        return CreateAlbumHandler:new(files,hash,title,desc)
+    end
+
+    function removeFromAlbum(args)
+        var hash,files = findHashFiles(args)
+        var short = findShort(args)
+        return RemoveFromAlbumHandier:new(files,hash,short)
+    end
+
+    function editAlbum(args)
+        var hash,files = findHashFiles(args)
+        var short = findShort(args)
+        var title = findTitle(args)
+        var desc = findDesc(args)
+        return EditAlbumHandler:new(files,hash,short,title,desc)
+    end
+
+    var requestOptions = {
+        ['fu'] = ArgOptions("-fu","upload a file to catbox. [-h userhash][-ih] -f file(s)",fileUploadHandler),
+        ['uu'] = ArgOptions("-uu", "upload a file from url to catbox. [-h userhash][-ih] -f url(s)",urlUploadHandler),
+        ['df'] = ArgOptions("-df","delete file(s) from catbox. [-h userhash][-ih] -f file(s)",deleteFiles),
+        ['aa'] = ArgOptions("-aa","add file(s) to album on catbox. [-h userhash] -s short -f file(s)",addToAlbum),
+        ['ca'] = ArgOptions('-ca',"create album on catbox. [-h userhash] -t title -d desc -f file(s)",createAlbum),
+        ['da'] = ArgOptions("-da","delete an album on catbox. [-h userhash] -s short",deleteAlbum),
+        ['ra'] = ArgOptions("-ra","remove file(s) from an album on catbox. [-h userhash] -s short =f file(s)",removeFromAlbum),
+        ['ea'] = ArgOptions("-ea","edit album on catbox. [-h userhash] -s short -t title -d description -f file(s)",editAlbum)
+    }
+
+    function requestError()
+        io.write("error\n")
+    end
+
+
+    static method handleArgs(args)
+       var argStr = table.concat(args,";;;")
+       var request = argStr:match("%-(..)")
+       if not request or not requestOptions[request] then
+            return requestError()
+       end
+       return requestOptions[request].func(argStr)
+    end
+
+endClass
+

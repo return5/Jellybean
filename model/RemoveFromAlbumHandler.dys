@@ -1,0 +1,20 @@
+
+var MultiFileHandler = require("model.MultiFileHandler")
+
+class RemoveFromAlbumHandler(files,hash,short) :> MultiFileHandler
+
+    method createCurlCommand()
+        return table.concat({"curl ",self.reqType,self.hash,self.short,self.files,"https://catbox.moe/user/api.php"})
+    end
+
+    method createUploadTable()
+        return {self:createCurlCommand()}
+    end
+
+    constructor(files,hash,short)
+        super(files,hash,'-F "reqtype=removefromalbum" ')
+        self.short = '-F "short=' .. short .. '" '
+    end
+
+endClass
+

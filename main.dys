@@ -1,0 +1,15 @@
+
+var ArgHandler = require('CatboxArgHandler')
+
+
+
+function main()
+    var request = ArgHandler.handleArgs(arg)
+    var results = request:uploadFiles()
+    for i=1,#results,1 do
+        io.write(results[i],"\n")
+    end
+end
+
+
+main()

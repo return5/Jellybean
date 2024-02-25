@@ -1,0 +1,10 @@
+
+var FileUploader = require("model.FileUploader")
+
+class FileUploadHandler(files,hash) :> FileUploader
+
+    constructor(files,hash)
+        super(files:gsub("(.-);;;",'-F "fileToUpload=@%1" '),hash,'-F "reqtype=fileupload" ')
+    end
+
+endClass

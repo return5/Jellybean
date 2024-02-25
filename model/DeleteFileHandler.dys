@@ -1,0 +1,10 @@
+
+var MultiFileHandler = require('model.MultiFileHandler')
+
+class DeleteFileHandler(files,hash) :> MultiFileHandler
+
+    constructor(files,hash)
+        super(files:gsub(";;;"," "),hash,'-F "reqtype=deletefiles" ')
+    end
+
+endClass

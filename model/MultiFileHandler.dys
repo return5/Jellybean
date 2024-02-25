@@ -1,0 +1,21 @@
+var FileUploader = require('model.FileUploader')
+
+class MultiFileHandler(files,hash,reqType) :> FileUploader
+
+    method createCurlCommand()
+        var curlCommand = {"curl "}
+        var typeOf = type
+        for _,v in pairs(self) do
+             if typeOf(v) == "string" then
+                curlCommand[#curlCommand + 1] = v
+             end
+        end
+        curlCommand[#curlCommand + 1] = "  https://catbox.moe/user/api.php"
+        return table.concat(curlCommand)
+    end
+
+    constructor(files,hash,reqType)
+        super(' -F files="' .. files:gsub(";;;"," ") .. '" ',hash,reqType)
+    end
+
+endClass
