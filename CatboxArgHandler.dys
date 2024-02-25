@@ -148,7 +148,7 @@ class ArgHandler()
 
     static method handleArgs(args)
        var argStr = table.concat(args,";;;")
-       var request = argStr:match("%-(..)")
+       var request = argStr:match("%-?(..)")
        if not request or not requestOptions[request] then
             return requestError()
        end
