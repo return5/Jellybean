@@ -101,6 +101,8 @@ class ArgHandler()
         return EditAlbumHandler:new(files,hash,short,title,desc)
     end
 
+    var printHelp <mutable> = ""
+
     var requestOptions = {
         ['fu'] = ArgOptions("-fu","upload a file to catbox. [-h userhash][-ih] -f file(s)",fileUploadHandler),
         ['uu'] = ArgOptions("-uu", "upload a file from url to catbox. [-h userhash][-ih] -f url(s)",urlUploadHandler),
@@ -108,12 +110,39 @@ class ArgHandler()
         ['aa'] = ArgOptions("-aa","add file(s) to album on catbox. [-h userhash] -s short -f file(s)",addToAlbum),
         ['ca'] = ArgOptions('-ca',"create album on catbox. [-h userhash] -t title -d desc -f file(s)",createAlbum),
         ['da'] = ArgOptions("-da","delete an album on catbox. [-h userhash] -s short",deleteAlbum),
-        ['ra'] = ArgOptions("-ra","remove file(s) from an album on catbox. [-h userhash] -s short =f file(s)",removeFromAlbum),
-        ['ea'] = ArgOptions("-ea","edit album on catbox. [-h userhash] -s short -t title -d description -f file(s)",editAlbum)
+        ['ra'] = ArgOptions("-ra","remove file(s) from an album on catbox. [-h userhash] -s short -f file(s)",removeFromAlbum),
+        ['ea'] = ArgOptions("-ea","edit album on catbox. [-h userhash] -s short -t title -d description -f file(s)",editAlbum),
+        ['h'] = ArgOptions("-h","print help message",printHelp)
     }
 
+    var flagOptions = {
+       ['-h'] = ArgOptions("-h","userhash. can be provided as an argument or set in Config.dys"),
+       ['-ih'] = ArgOptions("-ih","ignore hash.  ignores -h and also userhash field in Config.dys. can be set in Config.dys"),
+       ['-s'] = ArgOptions("-s","short. the 6 alphanumeric character in the generate url for an album."),
+       ['-f'] = ArgOptions("-f","file(s). list of file(s) to upload. with the -uu -f is the list of url(s) to upload from."),
+       ['-t'] = ArgOptions("-t","title"),
+       ['-d'] = ArgOptions("-d","description")
+    }
+
+    function printTable(tbl)
+        for _,v in pairs(tbl) do
+            io.write("\t",v.flag,"\t",v.desc,"\n")
+        end
+    end
+
+    printHelp = function()
+        io.write("Jellybean: a cli tool for using the api for catbox.moe:\n")
+        io.write("jellybean [request] [flag(s)]\n")
+        io.write("note: request must be first argument.\nrequest:\n")
+        printTable(requestOptions)
+        io.write("flags:\n")
+        printTable(flagOptions)
+        os.exit(75)
+    end
+
     function requestError()
-        io.write("error\n")
+        io.stderr:write("error: incorrect arguments\n")
+        printHelp()
     end
 
 
