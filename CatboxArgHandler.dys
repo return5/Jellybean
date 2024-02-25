@@ -118,7 +118,7 @@ class ArgHandler()
     var flagOptions = {
        ['-h'] = ArgOptions("-h","userhash. can be provided as an argument or set in Config.dys"),
        ['-ih'] = ArgOptions("-ih","ignore hash.  ignores -h and also userhash field in Config.dys. can be set in Config.dys"),
-       ['-s'] = ArgOptions("-s","short. the 6 alphanumeric character in the generate url for an album."),
+       ['-s'] = ArgOptions("-s","short. the 6 alphanumeric character in the generated url for an album."),
        ['-f'] = ArgOptions("-f","file(s). list of file(s) to upload. with the -uu -f is the list of url(s) to upload from."),
        ['-t'] = ArgOptions("-t","title"),
        ['-d'] = ArgOptions("-d","description")
