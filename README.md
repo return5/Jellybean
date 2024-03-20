@@ -44,7 +44,7 @@ note: request must be first argument.
 - t
   - title
 - f
-  - file(s). list of file(s) to upload. with the -uu -f is the list of url(s) to upload from.  
+  - file(s). list of file(s) to upload. with the uu request, -f is the list of url(s) to upload from.  
 - ih
   - ignore hash.  ignores -h and also userhash field in Config.dys. can be set in Config.dys  
 - h
